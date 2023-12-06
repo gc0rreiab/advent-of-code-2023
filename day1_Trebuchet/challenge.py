@@ -51,7 +51,7 @@ def extract_numeric_digits_and_numeric_words_from_string(input_str):
 file = open('input.txt', 'r')
 lines = file.readlines()
 
-#To solve the first part, change it to True. Otherwise keep false to solve part two.
+#To solve the first part, change it to False. Otherwise keep True to solve part two.
 part_two = True
 
 sum = 0
