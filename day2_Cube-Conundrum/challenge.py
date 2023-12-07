@@ -1,21 +1,22 @@
 import sys
 import re
 
-#Debug text with Red Color
+#Debug in terminal with Colors
 def prRed(skk): print("\033[91m {}\033[00m" .format(skk), end=" ")
 def prGreen(skk): print("\033[92m {}\033[00m" .format(skk), end=" ")
-
 
 elf_bag = { "red"   : 12,
             "green" : 13,
             "blue"  : 14}
 
 class Game:    
-    def __init__(self, id, max_r = 0, max_g = 0, max_b = 0):
+    def __init__(self, id, r = 0, g = 0, b = 0):
         self.id = id
-        self.max_r = max_r
-        self.max_g = max_g
-        self.max_b = max_b
+        self.cubes = {
+             "red"  : r,
+             "green": g,
+             "blue" : b
+        }
 
 # Puzzle solution starts here
 file = open('input.txt', 'r')
@@ -26,17 +27,17 @@ sum = 0
 for line in lines:
     id, sep, sub_games = line.strip().partition(': ')
     garbage, sep, id = id.partition(' ')
-    G = Game(int(id), 0, 0, 0)
+    id = int(id)
 
+    G = Game(id, 0, 0, 0)
     sub_games = sub_games.split("; ")
     
     prRed("Game: ")
     print(line)
     prRed("ID: ")
-    print(int(id))
+    print(id)
     prRed("Sub Games: ")
     print(sub_games)
-    #input("Press Enter to continue...")
     print()
     i = 0
     for sub_game in sub_games:
@@ -46,6 +47,7 @@ for line in lines:
         print(sub_game, end=" ")
         print()
         j = 0
+        #Dictionary to store the number of cubes for each color in each subgame  
         res_dct = {}
         for cubes in sub_game:
             j += 1
@@ -56,38 +58,35 @@ for line in lines:
 
         prRed("Dict: ")
         print(res_dct, end=" ")
+        print()
         
         for key in res_dct.keys():
-            if(key == 'red'):
-                if(res_dct[key] > G.max_r):
-                        G.max_r = res_dct[key]
-            elif(key == 'green'):
-                if(res_dct[key] > G.max_g):
-                        G.max_g = res_dct[key]
-            elif(key == 'blue'):
-                    if(res_dct[key] > G.max_b):
-                        G.max_b = res_dct[key]
+            if(res_dct[key] > G.cubes[key]):
+                G.cubes[key] = res_dct[key]
 
-        print()
-        print(G.id)
-        print(G.max_r)
-        print(G.max_g)
-        print(G.max_b)
-
-
-    if (G.max_r > elf_bag['red']) or (G.max_g > elf_bag['green']) or (G.max_b > elf_bag['blue']):
-       prRed("NAO !")
+    game_is_possible = False
+    for key in elf_bag.keys():
+     if (G.cubes[key] > elf_bag[key]):
+        game_is_possible = False
+        break
+     else:
+        game_is_possible = True
+        
+    if game_is_possible:
+        prGreen("YES !")
+        sum = sum + G.id
     else:
-        prGreen("SIM !")
-        sum = sum + G.id 
+        prRed("NO !")
+
     print()
     print()      
     
-print()
-print()
+
 print()
 prRed("Sum: ")
 print(sum)
         
+
+
 
 
