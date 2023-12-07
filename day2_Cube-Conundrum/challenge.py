@@ -60,17 +60,16 @@ for line in lines:
         print(res_dct, end=" ")
         print()
         
-        for key in res_dct.keys():
-            if(res_dct[key] > G.cubes[key]):
-                G.cubes[key] = res_dct[key]
-
-    game_is_possible = False
-    for key in elf_bag.keys():
-     if (G.cubes[key] > elf_bag[key]):
-        game_is_possible = False
-        break
-     else:
         game_is_possible = True
+        for key in res_dct.keys():
+            if(res_dct[key] > elf_bag[key]):
+                game_is_possible = False
+                break
+            else:
+                game_is_possible = True
+
+        if game_is_possible == False:
+            break
         
     if game_is_possible:
         prGreen("YES !")
